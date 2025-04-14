@@ -1,39 +1,33 @@
-import { HomeContainer, Product } from "@/styles/pages/home";
-import Image from "next/image";
+export const revalidate = 7200; // 2 hours
 
-import shirt1 from "../assets/shirts/t-shirt1.png"
-import shirt2 from "../assets/shirts/t-shirt2.png"
-// import shirt3 from "../assets/shirts/t-shirt3.png"
+import { stripe } from "@/lib/stripe"
+import HomeClient, { Product } from "./components/HomeClient"
+import Stripe from "stripe"
 
-export default function Home() {
-  return (
-    <HomeContainer>
-      <Product>
-        <Image src={shirt1} alt="" width={520} height={480} />
-
-        <footer>
-          <strong>Camiseta 1</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </Product>
-
-      <Product>
-        <Image src={shirt2} alt="" width={520} height={480} />
-
-        <footer>
-          <strong>Camiseta 2</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </Product>
-
-      {/* <Product>
-        <Image src={shirt3} alt="" width={520} height={480} />
-
-        <footer>
-          <strong>Camiseta 3</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </Product> */}
-    </HomeContainer>
-  );
+export default async function HomePage() {
+  try {
+    const response = await stripe.products.list({
+      expand: ["data.default_price"],
+    })
+  
+    const products = response.data.map((product): Product => {
+      const price = product.default_price as Stripe.Price
+  
+      return {
+        id: product.id,
+        name: product.name,
+        imageUrl: product.images[0],
+        description: String(product.description),
+        price: new Intl.NumberFormat("pt-PT", {
+          style: "currency",
+          currency: 'EUR',
+        }).format(Number(price.unit_amount ?? 0) / 100),
+      }
+    })
+  
+    return <HomeClient products={products} />
+  } catch (error) {
+    console.error("Error fetching products:", error)
+    return <div>Error loading products</div>
+  }
 }

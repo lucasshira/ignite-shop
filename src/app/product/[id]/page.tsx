@@ -1,7 +1,5 @@
-export default function Page({ params }: { params: string }) {
-  const { id } = params
-
+export default function Page() {
   return (
-    <h1>Produto {id}</h1>
+    <h1>Produto + id</h1>
   )
 }
