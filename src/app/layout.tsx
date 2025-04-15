@@ -6,6 +6,7 @@ import logoImg from '../assets/logo.svg'
 
 import Image from 'next/image';
 import { Container, Header } from '@/styles/pages/app';
+import Link from 'next/link';
 
 const roboto = Roboto({
   weight: ["400", "700"],
@@ -32,7 +33,9 @@ export default function RootLayout({
       <body className={roboto.className}>
       <Container>
         <Header>
-          <Image src={logoImg} alt="Ignite Shop Logo" />
+          <Link href="/" prefetch={false}>
+            <Image src={logoImg} alt="Ignite Shop Logo" />
+          </Link>
         </Header>
         {children}
       </Container>
