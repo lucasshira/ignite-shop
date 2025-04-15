@@ -33,7 +33,7 @@ export default function RootLayout({
       <body className={roboto.className}>
       <Container>
         <Header>
-          <Link href="/" prefetch={false}>
+          <Link href="/">
             <Image src={logoImg} alt="Ignite Shop Logo" />
           </Link>
         </Header>

@@ -31,7 +31,7 @@ export default function HomeClient({ products }: HomeClientProps) {
     <HomeContainer ref={sliderRef} className="keen-slider">
       {products.map((product) => {
         return (
-          <Link key={product.id} href={`/product/${product.id}`} prefetch={false}>
+          <Link key={product.id} href={`/product/${product.id}`}>
             <Product className="keen-slider__slide">
               <Image 
                 src={product.imageUrl} 
