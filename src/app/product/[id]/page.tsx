@@ -24,6 +24,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           style: "currency",
           currency: "EUR",
         }).format(Number(price.unit_amount ?? 0) / 100),
+        defaultPriceId: price.id,
       };
 
     return <ProductClient product={formattedProduct} />

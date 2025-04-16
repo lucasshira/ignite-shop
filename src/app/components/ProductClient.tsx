@@ -5,6 +5,7 @@ import { Product } from "./HomeClient";
 import Image from "next/image";
 
 export default function ProductClient({ product }: { product: Product }) {
+
   return (
     <ProductContainer>
       <ImageContainer>
@@ -22,8 +23,10 @@ export default function ProductClient({ product }: { product: Product }) {
 
         <p>{product.description}</p>
 
-        <button>
+        <button type="button">
+          <a href={`/checkout/${product.defaultPriceId}`}>
           Comprar agora
+          </a>
         </button>
       </ProductDetails>
     </ProductContainer>

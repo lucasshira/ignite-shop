@@ -13,6 +13,7 @@ export type Product = {
   imageUrl: string
   description: string
   price: string
+  defaultPriceId: string
 }
 
 interface HomeClientProps {
