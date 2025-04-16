@@ -1,7 +1,12 @@
 import { stripe } from "@/lib/stripe";
 
-export async function GET({ params }: { params: { id: string } }) {
-  const priceId = params.id;
+export async function POST(req: Request) {
+  const body = await req.json();
+  const priceId = body.priceId;
+
+  if (!priceId) {
+    return new Response("Price ID not provided", { status: 400 });
+  }
 
   const success_url = `${process.env.NEXT_PUBLIC_URL}/success`;
   const cancel_url = `${process.env.NEXT_PUBLIC_URL}/`;
