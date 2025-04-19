@@ -5,8 +5,29 @@ import { stripe } from "@/lib/stripe"
 import ProductClient from "@/app/components/ProductClient";
 import Stripe from "stripe";
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id: productId } = await params;
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const { id: productId } = params;
+
+  try {
+    const product = await stripe.products.retrieve(productId, {
+      expand: ["default_price"],
+    });
+
+    return {
+      title: `${product.name} | Ignite Shop`,
+      description: product.description || "Produto da Ignite Shop",
+    };
+  } catch (error) {
+    console.error("Error fetching product for metadata:", error);
+    return {
+      title: "Produto Não Encontrado | Ignite Shop",
+      description: "Erro ao carregar o produto",
+    };
+  }
+}
+
+export default async function ProductPage({ params }: { params: { id: string } }) {
+  const { id: productId } = params;
 
   try {
     const product = await stripe.products.retrieve(productId, {

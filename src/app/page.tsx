@@ -4,6 +4,11 @@ import { stripe } from "@/lib/stripe"
 import HomeClient, { Product } from "./components/HomeClient"
 import Stripe from "stripe"
 
+export const metadata = {
+  title: "Home | Ignite Shop",
+  description: "Ignite Shop - Catalogo de produtos",
+}
+
 export default async function HomePage() {
   try {
     const response = await stripe.products.list({

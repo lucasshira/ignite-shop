@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     return new Response("Price ID not provided", { status: 400 });
   }
 
-  const success_url = `${process.env.NEXT_PUBLIC_URL}/success`;
+  const success_url = `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
   const cancel_url = `${process.env.NEXT_PUBLIC_URL}/`;
 
   const checkoutSession = await stripe.checkout.sessions.create({

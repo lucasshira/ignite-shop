@@ -15,7 +15,11 @@ const roboto = Roboto({
 }
 )
 export const metadata = {
-  title: 'Ignite Shop',
+  title: {
+    default: 'Carregando... | Ignite Shop',
+    template: '%s | Ignite Shop',
+  },
+  description: 'Ignite Shop',
 }
 
 globalStyles()
