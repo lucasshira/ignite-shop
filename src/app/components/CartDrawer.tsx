@@ -2,25 +2,28 @@ import { CartItem, CartItems, CloseButton, DrawerContainer, Overlay } from "@/st
 import axios from "axios";
 import { X } from "lucide-react";
 import { useState } from "react";
-import { Product } from "./HomeClient";
 import Image from "next/image";
+import { useShoppingCart } from "use-shopping-cart";
+import { Product } from "use-shopping-cart/core";
 
 interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  product: Product
+  product?: Product;
 }
 
 export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps) { 
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
 
+  const { cartDetails } = useShoppingCart();
+  console.log(cartDetails)
 
   async function handleBuyProduct() {
     try {
       setIsCreatingCheckoutSession(true);
 
       const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId
+        priceId: product?.defaultPriceId
       });
 
       const { checkoutUrl } = response.data;
@@ -48,11 +51,22 @@ export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps
         <h2>Sacola de compras</h2>
         <CartItems>
           <CartItem>
-            <Image src={product.imageUrl} alt="" />
-            <div>
-              <strong>{product.name}</strong>
-              <span>{product.price}</span>
-            </div>
+            {cartDetails && Object.entries(cartDetails).map(([key, value]) => {
+              return (
+                <div key={key}>
+                  <Image
+                    src={value.imageUrl} 
+                    alt="" 
+                    width={100} 
+                    height={100} 
+                  />
+                  <div>
+                    <strong>{value.name}</strong>
+                    <span>{value.price}</span>
+                  </div>
+                </div>
+              )
+            })}
           </CartItem>
         </CartItems>
 

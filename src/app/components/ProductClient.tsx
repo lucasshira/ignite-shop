@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useShoppingCart } from "use-shopping-cart";
 
 export default function ProductClient({ product }: { product: Product }) {
-  const { addItem } = useShoppingCart()
+  const { addItem } = useShoppingCart();
 
   return (
     <ProductContainer>
@@ -25,7 +25,7 @@ export default function ProductClient({ product }: { product: Product }) {
 
         <p>{product.description}</p>
 
-        <button onClick={() => addItem(product)}>
+        <button onClick={() => addItem(product.id)}>
           Colocar na sacola
         </button>
       </ProductDetails>
