@@ -6,7 +6,7 @@ import ProductClient from "@/app/components/ProductClient";
 import Stripe from "stripe";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const { id: productId } = params;
+  const { id: productId } =  params;
 
   try {
     const product = await stripe.products.retrieve(productId, {

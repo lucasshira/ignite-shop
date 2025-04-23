@@ -3,31 +3,10 @@
 import { ImageContainer, ProductContainer, ProductDetails } from "@/styles/pages/product";
 import { Product } from "./HomeClient";
 import Image from "next/image";
-import axios from "axios";
-import { useState } from "react";
+import { useShoppingCart } from "use-shopping-cart";
 
 export default function ProductClient({ product }: { product: Product }) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState<boolean>(false);
-
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true);
-
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId
-      });
-
-      const { checkoutUrl } = response.data;
-      
-      window.location.href = checkoutUrl;
-    } catch (error) {
-      // TODO: conectar com uma ferramenta de observabilidade (data dog/sentry)
-
-      setIsCreatingCheckoutSession(false);
-      alert('Erro ao redirecionar para o checkout');
-      console.error(error);
-    }
-  }
+  const { addItem } = useShoppingCart()
 
   return (
     <ProductContainer>
@@ -46,8 +25,8 @@ export default function ProductClient({ product }: { product: Product }) {
 
         <p>{product.description}</p>
 
-        <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>
-          {isCreatingCheckoutSession ? 'Redirecionando...' : 'Comprar agora'}
+        <button onClick={() => addItem(product)}>
+          Colocar na sacola
         </button>
       </ProductDetails>
     </ProductContainer>
