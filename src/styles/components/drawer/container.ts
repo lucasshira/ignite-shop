@@ -23,18 +23,6 @@ export const DrawerContainer = styled('div', {
   },
 });
 
-export const FinishButton = styled('button', {
-  marginTop: 'auto',
-  background: '$green500',
-  padding: '1.2rem',
-  border: 'none',
-  borderRadius: '6px',
-  color: '$white',
-  fontWeight: 'bold',
-  fontSize: '1rem',
-  cursor: 'pointer',
-})
-
 export const CloseButton = styled('button', {
   position: 'absolute',
   top: '1rem',
@@ -57,8 +45,31 @@ export const CartItems = styled('div', {
   gap: '2rem',
   marginTop: '2rem',
   overflowY: 'auto',
-  maxHeight: 'calc(100% - 10rem)'
-})
+  maxHeight: 'calc(100% - 10rem)',
+
+  'button': {
+    background: '$green500',
+    padding: '1.2rem',
+    border: 'none',
+    borderRadius: '6px',
+    color: '$white',
+    fontWeight: 'bold',
+    fontSize: '1rem',
+    cursor: 'pointer',
+  },
+});
+
+// export const FinishButton = styled('button', {
+//   background: '$green500',
+//   padding: '1.2rem',
+//   border: 'none',
+//   borderRadius: '6px',
+//   color: '$white',
+//   fontWeight: 'bold',
+//   fontSize: '1rem',
+//   cursor: 'pointer',
+//   marginTop: 'auto',
+// })
 
 export const CartItem = styled('div', {
   display: 'flex',
@@ -107,6 +118,7 @@ export const CartItem = styled('div', {
         background: 'none',
         fontWeight: 'bold',
         border: 'none',
+        padding: 0,
       }
     }
   },

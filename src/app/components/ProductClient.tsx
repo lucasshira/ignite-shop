@@ -6,18 +6,24 @@ import Image from "next/image";
 import { useShoppingCart } from "use-shopping-cart";
 
 export default function ProductClient({ product }: { product: Product }) {
-  const { addItem } = useShoppingCart();
+  const { addItem, incrementItem, cartDetails } = useShoppingCart();
 
   const handleAddToCart = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      currency: "EUR",
-      image: product.imageUrl,
-      description: product.description,
-      quantity: product.quantity,
-    });
+    const isItemInCart = cartDetails && cartDetails[product.id];
+
+    if (isItemInCart) {
+      incrementItem(product.id, { count: 1 });
+    } else {
+      addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        currency: "EUR",
+        image: product.imageUrl,
+        description: product.description,
+        quantity: 1,
+      });
+    }
   };
 
   return (
