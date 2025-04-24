@@ -8,6 +8,18 @@ import { useShoppingCart } from "use-shopping-cart";
 export default function ProductClient({ product }: { product: Product }) {
   const { addItem } = useShoppingCart();
 
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      currency: "EUR",
+      image: product.imageUrl,
+      description: product.description,
+      quantity: product.quantity,
+    });
+  };
+
   return (
     <ProductContainer>
       <ImageContainer>
@@ -25,7 +37,7 @@ export default function ProductClient({ product }: { product: Product }) {
 
         <p>{product.description}</p>
 
-        <button onClick={() => addItem(product.id)}>
+        <button onClick={handleAddToCart}>
           Colocar na sacola
         </button>
       </ProductDetails>

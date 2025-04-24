@@ -3,6 +3,7 @@ import { stripe } from "@/lib/stripe";
 export async function POST(req: Request) {
   const body = await req.json();
   const priceId = body.priceId;
+  const quantity = body.quantity;
 
   if (!priceId) {
     return new Response("Price ID not provided", { status: 400 });
@@ -18,7 +19,7 @@ export async function POST(req: Request) {
     line_items: [
       {
         price: priceId,
-        quantity: 1,
+        quantity: quantity,
       }
     ]
   })

@@ -1,4 +1,4 @@
-import { CartItem, CartItems, CloseButton, DrawerContainer, Overlay } from "@/styles/components/drawer/container";
+import { CartItem, CartItems, CloseButton, DrawerContainer, FinishButton, Overlay } from "@/styles/components/drawer/container";
 import axios from "axios";
 import { X } from "lucide-react";
 import { useState } from "react";
@@ -14,8 +14,8 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps) { 
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
-
-  const { cartDetails } = useShoppingCart();
+  
+  const { cartDetails, removeItem } = useShoppingCart();
   console.log(cartDetails)
 
   async function handleBuyProduct() {
@@ -50,29 +50,31 @@ export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps
         </CloseButton>
         <h2>Sacola de compras</h2>
         <CartItems>
-          <CartItem>
             {cartDetails && Object.entries(cartDetails).map(([key, value]) => {
               return (
-                <div key={key}>
+                <CartItem key={key}>
                   <Image
-                    src={value.imageUrl} 
-                    alt="" 
+                    src={value.image}
+                    alt=""
                     width={100} 
                     height={100} 
                   />
                   <div>
-                    <strong>{value.name}</strong>
-                    <span>{value.price}</span>
+                    <p>{value.name}</p>
+                    <strong>{value.price}</strong>
+                    <main>
+                      <button>Remover</button>
+                      <span>{value.quantity}</span>
+                    </main>
                   </div>
-                </div>
+                </CartItem>
               )
             })}
-          </CartItem>
         </CartItems>
 
-        <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>
+        <FinishButton disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>
           Finalizar compra
-        </button>
+        </FinishButton>
       </DrawerContainer>
       {isOpen && <Overlay onClick={onClose} />}
     </>

@@ -23,6 +23,18 @@ export const DrawerContainer = styled('div', {
   },
 });
 
+export const FinishButton = styled('button', {
+  marginTop: 'auto',
+  background: '$green500',
+  padding: '1.2rem',
+  border: 'none',
+  borderRadius: '6px',
+  color: '$white',
+  fontWeight: 'bold',
+  fontSize: '1rem',
+  cursor: 'pointer',
+})
+
 export const CloseButton = styled('button', {
   position: 'absolute',
   top: '1rem',
@@ -42,22 +54,60 @@ export const Overlay = styled('div', {
 export const CartItems = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '1.5rem',
+  gap: '2rem',
   marginTop: '2rem',
   overflowY: 'auto',
-  maxHeight: 'calc(100% - 4rem)'
+  maxHeight: 'calc(100% - 10rem)'
 })
 
 export const CartItem = styled('div', {
   display: 'flex',
-  justifyContent: 'space-between',
-  flexDirection: 'column',
   alignItems: 'center',
-  padding: '1rem',
-  width: '100px',
+  width: '100%',
+  gap: '1.5rem',
+  height: '100%',
 
-  '& p': {
-    fontSize: '1rem',
-    color: '$gray100',
+  'img': {
+    width: '100px',
+    height: '100px',
+    objectFit: 'cover',
+    borderRadius: '8px',
+    background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
+  },
+
+  'div': {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    flex: 1,
+    gap: "0.5rem",
+
+    p: {
+      fontSize: "$md",
+      color: "$white",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    },
+
+    strong: {
+      fontSize: "$md",
+      fontWeight: "bold",
+      color: "$white",
+    },
+
+    'main': {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginTop: '0.5rem',
+
+      'button': {
+        color: '$green500',
+        cursor: 'pointer',
+        background: 'none',
+        fontWeight: 'bold',
+        border: 'none',
+      }
+    }
   },
 })
