@@ -7,12 +7,12 @@ export const DrawerContainer = styled('div', {
   width: '500px',
   height: '100%',
   backgroundColor: '$gray800',
-  padding: '2rem',
   boxShadow: '-2px 0 5px rgba(0,0,0,0.5)',
   zIndex: 1000,
   display: 'flex',
   flexDirection: 'column',
   gap: '1rem',
+  padding: '2rem',
 
   variants: {
     isOpen: {
@@ -21,6 +21,32 @@ export const DrawerContainer = styled('div', {
       },
     },
   },
+
+  'footer': {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'absolute',
+    gap: '1rem',
+    bottom: '2rem',
+    left: '2rem',
+    right: '2rem',
+
+    div: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      fontSize: '$md',
+
+      strong: {
+        fontSize: '$lg',
+        fontWeight: 'bold',
+        color: '$white',
+      },
+    },
+
+    'button': {
+      marginTop: '2rem'
+    }
+  }
 });
 
 export const CloseButton = styled('button', {

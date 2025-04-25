@@ -2,11 +2,14 @@
 
 import { ImageContainer, ProductContainer, ProductDetails } from "@/styles/pages/product";
 import { Product } from "./HomeClient";
-import Image from "next/image";
 import { useShoppingCart } from "use-shopping-cart";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 
 export default function ProductClient({ product }: { product: Product }) {
   const { addItem, incrementItem, cartDetails } = useShoppingCart();
+  const router = useRouter();
 
   const handleAddToCart = () => {
     const isItemInCart = cartDetails && cartDetails[product.id];
@@ -24,6 +27,7 @@ export default function ProductClient({ product }: { product: Product }) {
         quantity: 1,
       });
     }
+    router.refresh();
   };
 
   return (

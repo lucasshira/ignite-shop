@@ -14,9 +14,20 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps) { 
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
-  
   const { cartDetails, removeItem } = useShoppingCart();
-  console.log(cartDetails)
+
+  const parsePrice = (priceString: string) => {
+    const cleaned = priceString.replace(/[^\d,.-]/g, '').replace(',', '.');
+    return parseFloat(cleaned);
+  };
+
+  const calculateTotalItems = () => {
+    return Object.values(cartDetails || {}).reduce((acc, item) => {
+      const price = parsePrice(item.price);
+      const quantity = Number(item.quantity);
+      return acc + price * quantity;
+    }, 0);
+  };
 
   async function handleBuyProduct() {
     try {
@@ -51,7 +62,7 @@ export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps
         <h2>Sacola de compras</h2>
         <CartItems>
           {Object.keys(cartDetails!).length === 0 ? (
-            <p>Seu carrinho está vazio</p>
+            <p>Seu carrinho está vazio.</p>
           ) : (
             Object.entries(cartDetails!).map(([key, value]) => (
               <CartItem key={key}>
@@ -73,12 +84,30 @@ export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps
             ))
           )}
           {Object.keys(cartDetails!).length > 0 && (
-            <button
-              disabled={isCreatingCheckoutSession}
-              onClick={handleBuyProduct}
-            >
-              Finalizar compra
-            </button>
+            <footer>
+              <div>
+                <p>Quantidade: </p>
+                <span>
+                  {Object.values(cartDetails!).reduce((acc, item) => {
+                    return acc + item.quantity;
+                  }, 0) + ' item(s)'}
+                </span>
+              </div>
+
+              <div>
+                <strong>Valor total</strong>
+                <strong>
+                  {calculateTotalItems().toFixed(2).replace('.', ',') + ' €'}
+                </strong>
+              </div>
+
+              <button
+                disabled={isCreatingCheckoutSession}
+                onClick={handleBuyProduct}
+              >
+                Finalizar compra
+              </button>
+            </footer>
           )}
         </CartItems>
       </DrawerContainer>

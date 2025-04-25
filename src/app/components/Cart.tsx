@@ -2,13 +2,17 @@
 
 import { ShoppingBagIcon } from "lucide-react";
 import CartDrawer from "./CartDrawer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useShoppingCart } from "use-shopping-cart";
 import { CartButton } from "@/styles/pages/app";
 
 export default function Cart() {
   const [cartOpen, setCartOpen] = useState(false);
   const { cartCount } = useShoppingCart();
+
+  useEffect(() => {
+    console.log("cartCount atualizado:", cartCount);
+  }, [cartCount]);
 
   const handleOpenCart = () => {
     setCartOpen(true);
