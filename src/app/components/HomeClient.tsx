@@ -11,11 +11,10 @@ export type Product = {
   id: string
   name: string
   imageUrl: string
-  quantity: number
+  quantity?: number
   description: string
   price: string
-  defaultPriceId?: string
-  currency: string
+  defaultPriceId: string
 }
 
 interface HomeClientProps {

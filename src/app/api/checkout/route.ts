@@ -2,11 +2,10 @@ import { stripe } from "@/lib/stripe";
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const priceId = body.priceId;
-  const quantity = body.quantity;
+  const { lineItems } = body;
 
-  if (!priceId) {
-    return new Response("Price ID not provided", { status: 400 });
+  if (!lineItems || lineItems.length === 0) {
+    return new Response("Items not provided", { status: 400 });
   }
 
   const success_url = `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
@@ -16,12 +15,7 @@ export async function POST(req: Request) {
     success_url,
     cancel_url,
     mode: "payment",
-    line_items: [
-      {
-        price: priceId,
-        quantity: quantity,
-      }
-    ]
+    line_items: lineItems,
   })
 
   return new Response(JSON.stringify({ checkoutUrl: checkoutSession.url }), {

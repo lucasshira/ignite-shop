@@ -1,6 +1,6 @@
 import { CartItem, CartItems, CloseButton, DrawerContainer, Overlay } from "@/styles/components/drawer/container";
 import axios from "axios";
-import { X } from "lucide-react";
+import { PlusIcon, MinusIcon, X } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import { useShoppingCart } from "use-shopping-cart";
@@ -12,9 +12,9 @@ interface CartDrawerProps {
   product?: Product;
 }
 
-export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps) { 
+export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) { 
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
-  const { cartDetails, removeItem } = useShoppingCart();
+  const { cartDetails, removeItem, incrementItem, decrementItem } = useShoppingCart();
 
   const parsePrice = (priceString: string) => {
     const cleaned = priceString.replace(/[^\d,.-]/g, '').replace(',', '.');
@@ -22,19 +22,33 @@ export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps
   };
 
   const calculateTotalItems = () => {
-    return Object.values(cartDetails || {}).reduce((acc, item) => {
-      const price = parsePrice(item.price);
+    const total = Object.values(cartDetails || {}).reduce((acc, item) => {
+      const price = parsePrice(Number(item.price).toFixed(2).replace('.', ','));
       const quantity = Number(item.quantity);
       return acc + price * quantity;
     }, 0);
+  
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(total);
   };
 
   async function handleBuyProduct() {
+    if (!cartDetails) return;
+
+    const lineItems = Object.entries(cartDetails).map((product) => ({
+      price: product[1],
+      quantity: product[1].quantity,
+    }));
+
+    console.log(lineItems, 'lineItems enviados para Stripe');
+
     try {
       setIsCreatingCheckoutSession(true);
 
       const response = await axios.post('/api/checkout', {
-        priceId: product?.defaultPriceId
+        lineItems
       });
 
       const { checkoutUrl } = response.data;
@@ -77,7 +91,11 @@ export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps
                   <strong>{value.price}</strong>
                   <main>
                     <button onClick={() => removeItem(value.id)}>Remover</button>
-                    <span>{value.quantity}</span>
+                    <span>
+                      <button onClick={() => incrementItem(value.id)}><PlusIcon size={14} /></button>
+                        {value.quantity}
+                      <button onClick={() => decrementItem(value.id)}><MinusIcon size={14} /></button>
+                    </span>
                   </main>
                 </div>
               </CartItem>
@@ -97,7 +115,7 @@ export default function CartDrawer({ isOpen, onClose, product }: CartDrawerProps
               <div>
                 <strong>Valor total</strong>
                 <strong>
-                  {calculateTotalItems().toFixed(2).replace('.', ',') + ' €'}
+                  {calculateTotalItems()}
                 </strong>
               </div>
 

@@ -83,6 +83,24 @@ export const CartItems = styled('div', {
     fontSize: '1rem',
     cursor: 'pointer',
   },
+
+  'span': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    fontSize: '$md',
+    color: '$white',
+
+    'button': {
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      color: '$green500',
+      display: 'flex',
+      alignItems: 'center',
+    }
+
+  }
 });
 
 // export const FinishButton = styled('button', {

@@ -4,30 +4,29 @@ import { ImageContainer, ProductContainer, ProductDetails } from "@/styles/pages
 import { Product } from "./HomeClient";
 import { useShoppingCart } from "use-shopping-cart";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-
 
 export default function ProductClient({ product }: { product: Product }) {
   const { addItem, incrementItem, cartDetails } = useShoppingCart();
-  const router = useRouter();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = () => { 
     const isItemInCart = cartDetails && cartDetails[product.id];
 
     if (isItemInCart) {
       incrementItem(product.id, { count: 1 });
     } else {
       addItem({
-        id: product.id,
+        id: product.defaultPriceId,
         name: product.name,
         price: product.price,
+        priceId: product.defaultPriceId,
         currency: "EUR",
         image: product.imageUrl,
         description: product.description,
         quantity: 1,
       });
     }
-    router.refresh();
+
+    console.log(cartDetails, 'cartDetails depois de adicionar o produto');
   };
 
   return (

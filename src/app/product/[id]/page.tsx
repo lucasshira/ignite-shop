@@ -27,26 +27,28 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
-  const { id: productId } = params;
+  const { id: productId } = await params;
 
   try {
     const product = await stripe.products.retrieve(productId, {
       expand: ["default_price"],
     })
 
-      const price = product.default_price as Stripe.Price
+    const price = product.default_price as Stripe.Price
 
-      const formattedProduct = {
-        id: product.id,
-        name: product.name,
-        imageUrl: product.images[0],
-        description: String(product.description),
-        price: new Intl.NumberFormat("pt-PT", {
-          style: "currency",
-          currency: "EUR",
-        }).format(Number(price.unit_amount ?? 0) / 100),
-        defaultPriceId: price.id,
-      };
+    console.log(product, 'product retornado do stripe')
+
+    const formattedProduct = {
+      id: product.id,
+      name: product.name,
+      imageUrl: product.images[0],
+      description: String(product.description),
+      price: new Intl.NumberFormat("pt-PT", {
+        style: "currency",
+        currency: "EUR",
+      }).format(Number(price.unit_amount ?? 0) / 100),
+      defaultPriceId: price.id,
+    };
 
     return <ProductClient product={formattedProduct} />
   } catch (error) {
