@@ -16,22 +16,21 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
   const { cartDetails, removeItem, incrementItem, decrementItem } = useShoppingCart();
 
-  const parsePrice = (priceString: string) => {
-    const cleaned = priceString.replace(/[^\d,.-]/g, '').replace(',', '.');
+  const parsePrice = (priceString: string): number => {
+    const cleaned = priceString
+      .replace(/[^\d,]/g, '')
+      .replace(',', '.');
     return parseFloat(cleaned);
   };
 
   const calculateTotalItems = () => {
     const total = Object.values(cartDetails || {}).reduce((acc, item) => {
-      const price = parsePrice(Number(item.price).toFixed(2).replace('.', ','));
+      const price = parsePrice(item.price);
       const quantity = Number(item.quantity);
       return acc + price * quantity;
     }, 0);
-  
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(total);
+
+    return total.toFixed(2);
   };
 
   async function handleBuyProduct() {
@@ -115,7 +114,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               <div>
                 <strong>Valor total</strong>
                 <strong>
-                  {calculateTotalItems()}
+                  {calculateTotalItems()} €
                 </strong>
               </div>
 
