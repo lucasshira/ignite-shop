@@ -1,5 +1,5 @@
 import { stripe } from "@/lib/stripe";
-import { ImageContainer, SuccessContainer } from "@/styles/pages/success";
+import { SuccessContainer } from "@/styles/pages/success";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -28,24 +28,45 @@ export default async function Success({ searchParams }: SuccessPageProps) {
     session = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ["line_items", "line_items.data.price.product", "customer"],
     });
+    console.log(session, 'session');
   } catch (error) {
     console.error("Error fetching session:", error)
     return <div>Error loading session</div>
   }
 
   const customerName = session.customer_details?.name;
-  const product = session.line_items?.data[0].price?.product as Stripe.Product;
-  const productName = product.name;
-  const productImageUrl = product.images[0];
+
+  const items = session.line_items?.data.map((item) => {
+    return {
+      id: item.id,
+      quantity: item.quantity,
+      price: item.price,
+      product: item.price?.product as Stripe.Product,
+      productImageUrl: (item.price?.product as Stripe.Product).images[0],
+    }
+  })
 
   return (
     <SuccessContainer>
       <h1>Compra efetuada!</h1>
-      <ImageContainer>
-        <Image src={productImageUrl} alt="" width={120} height={110} />
-      </ImageContainer>
 
-      <p>Uhuul <strong>{customerName}</strong>, sua <strong>{productName}</strong> já está a caminho da sua casa.</p>
+      <div>
+        {items?.map((item) => {
+            return (
+              <main key={item.id}>
+                <Image
+                  key={item.id}
+                  src={item.productImageUrl}
+                  alt=""
+                  width={120}
+                  height={110}
+                />
+              </main>
+            )
+          })}
+      </div>
+
+      <p>Uhuul <strong>{customerName}</strong>, sua compra já está a caminho da sua casa.</p>
 
       <Link href="/">
         Voltar ao catálogo

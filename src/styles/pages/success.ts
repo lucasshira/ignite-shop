@@ -33,21 +33,32 @@ export const SuccessContainer = styled('main', {
     '&:hover': {
       color: '$green300',
     }
-  }
-});
+  },
 
-export const ImageContainer = styled('div', {
-  width: '100%',
-  maxWidth: 130,
-  height: 145,
-  background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginTop: '4rem',
-  borderRadius: 8,
+  'div': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '4rem',
+    gap: '1rem',
 
-  img: {
-    objectFit: 'cover',
+    'main': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      maxWidth: 160,
+      borderRadius: '50%',
+      height: 120,
+      background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
+
+      img: {
+        objectFit: 'cover',
+      },
+    }
   },
 });
+
+// export const ImageContainer = styled('div', {
+
+// });

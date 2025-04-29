@@ -36,9 +36,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   async function handleBuyProduct() {
     if (!cartDetails) return;
 
-    const lineItems = Object.entries(cartDetails).map((product) => ({
-      price: product[1],
-      quantity: product[1].quantity,
+    const lineItems = Object.entries(cartDetails).map(([, item]) => ({
+      price: item.priceId,
+      quantity: item.quantity,
     }));
 
     console.log(lineItems, 'lineItems enviados para Stripe');
@@ -54,8 +54,6 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       
       window.location.href = checkoutUrl;
     } catch (error) {
-      // TODO: conectar com uma ferramenta de observabilidade (data dog/sentry)
-
       setIsCreatingCheckoutSession(false);
       alert('Erro ao redirecionar para o checkout');
       console.error(error);

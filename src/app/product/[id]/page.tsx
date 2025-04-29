@@ -5,7 +5,13 @@ import { stripe } from "@/lib/stripe"
 import ProductClient from "@/app/components/ProductClient";
 import Stripe from "stripe";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: {
+    id: string;
+  }
+}
+
+export async function generateMetadata({ params }: { params: PageProps['params'] }) {
   const { id: productId } =  params;
 
   try {
@@ -26,8 +32,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   }
 }
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
-  const { id: productId } = await params;
+export default async function ProductPage({ params }: { params: PageProps['params'] }) {
+  const { id: productId } = params;
 
   try {
     const product = await stripe.products.retrieve(productId, {
